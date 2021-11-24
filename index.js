@@ -110,7 +110,7 @@ app.get("/booklist/:id", async (req, res) => {
     ? res.send(book)
     : res.send({ message: `There is no book with the id ${id}` });
 });
-app.post("/booklist/:id", async (req, res) => {
+app.get("/booklist/:id", async (req, res) => {
   const { id } = req.params;
   //   const book = BooksList.find((bk) => bk.id === id);
   const client = await createConnection();

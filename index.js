@@ -1,8 +1,18 @@
 import express from "express";
+import { MongoClient } from "mongodb";
 
 const app = express();
 
 const PORT = 9000;
+
+const MONGO_URL = "mongodb://localhost";
+
+async function createConnection() {
+  const client = new MongoClient(MONGO_URL);
+  await client.connect();
+  console.log("Mongo DB is connected.");
+}
+createConnection();
 
 const BooksList = [
   {

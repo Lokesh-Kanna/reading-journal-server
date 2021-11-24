@@ -11,6 +11,12 @@ async function createConnection() {
   const client = new MongoClient(MONGO_URL);
   await client.connect();
   console.log("Mongo DB is connected.");
+  return client;
+  //   const testFind = await client
+  //     .db("Books")
+  //     .collection("booklist")
+  //     .findOne({ id: "2" });
+  //   console.log(testFind);
 }
 createConnection();
 
@@ -88,9 +94,16 @@ app.get("/booklist", (req, res) => {
   res.send(BooksList);
 });
 
-app.get("/booklist/:id", (req, res) => {
+app.get("/booklist/:id", async (req, res) => {
   const { id } = req.params;
-  const book = BooksList.find((bk) => bk.id === id);
+  //   const book = BooksList.find((bk) => bk.id === id);
+  const client = await createConnection();
+
+  const book = await client
+    .db("Books")
+    .collection("booklist")
+    .findOne({ id: "2" });
+
   book
     ? res.send(book)
     : res.send({ message: `There is no book with the id ${id}` });

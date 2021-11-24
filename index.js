@@ -1,5 +1,8 @@
 import express from "express";
 import { MongoClient } from "mongodb";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 
@@ -7,8 +10,7 @@ app.use(express.json()); //Middlewere to convert all the request to JSON
 
 const PORT = 9000;
 
-const MONGO_URL =
-  "mongodb+srv://LokeshKanna:book123@cluster0.60x6w.mongodb.net";
+const MONGO_URL = process.env.MONGO_URL;
 
 async function createConnection() {
   const client = new MongoClient(MONGO_URL);

@@ -3,6 +3,8 @@ import { MongoClient } from "mongodb";
 
 const app = express();
 
+app.use(express.json()); //Middlewere to convert all the request to JSON
+
 const PORT = 9000;
 
 const MONGO_URL = "mongodb://localhost";
@@ -102,11 +104,37 @@ app.get("/booklist/:id", async (req, res) => {
   const book = await client
     .db("Books")
     .collection("booklist")
-    .findOne({ id: "2" });
+    .findOne({ id: id });
 
   book
     ? res.send(book)
     : res.send({ message: `There is no book with the id ${id}` });
+});
+app.post("/booklist/:id", async (req, res) => {
+  const { id } = req.params;
+  //   const book = BooksList.find((bk) => bk.id === id);
+  const client = await createConnection();
+  console.log("data", data);
+
+  const book = await client
+    .db("Books")
+    .collection("booklist")
+    .insertOne({ id: id });
+
+  book
+    ? res.send(book)
+    : res.send({ message: `There is no book with the id ${id}` });
+});
+app.post("/booklist", async (req, res) => {
+  const data = req.body;
+  const client = await createConnection();
+
+  const addedbook = await client
+    .db("Books")
+    .collection("booklist")
+    .insertMany(data);
+
+  res.send(addedbook);
 });
 
 app.listen(PORT, () =>

@@ -94,6 +94,21 @@ app.post("/booklist", async (req, res) => {
   res.send(addedbook);
 });
 
+app.delete("/booklist/:id", async (req, res) => {
+  const { id } = req.params;
+  //   const book = BooksList.find((bk) => bk.id === id);
+  const client = await createConnection();
+
+  const book = await client
+    .db("Books")
+    .collection("booklist")
+    .deleteOne({ id: id });
+
+  book
+    ? res.send(book)
+    : res.send({ message: `There is no book with the id ${id}` });
+});
+
 app.listen(PORT, () =>
   console.log("The server has started in local host ", PORT)
 );

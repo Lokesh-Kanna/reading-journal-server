@@ -27,6 +27,8 @@ export async function createConnection() {
 }
 createConnection();
 
+const client = await createConnection();
+
 app.get("/", (req, res) => {
   res.send("Hello Reader");
 });
@@ -39,6 +41,15 @@ app.get("/booklist", async (req, res) => {
   }
 
   const books = await showAllBooks(filter);
+  // async function showAllBooks(filter) {
+  //   const client = await createConnection();
+  //   const books = await client
+  //     .db("Books")
+  //     .collection("booklist")
+  //     .find(filter)
+  //     .toArray();
+  //   return books;
+  // }
   res.send(books);
 });
 
@@ -78,3 +89,5 @@ app.put("/booklist", async (req, res) => {
 app.listen(PORT, () =>
   console.log("The server has started in local host ", PORT)
 );
+
+export { client };

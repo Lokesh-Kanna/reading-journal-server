@@ -1,8 +1,6 @@
-import { createConnection } from "./index.js";
+import { client } from "./index.js";
 
 async function showAllBooks(filter) {
-  const client = await createConnection();
-
   const books = await client
     .db("Books")
     .collection("booklist")
@@ -12,8 +10,6 @@ async function showAllBooks(filter) {
 }
 
 async function findBooksById(id) {
-  const client = await createConnection();
-
   const book = await client
     .db("Books")
     .collection("booklist")
@@ -22,8 +18,6 @@ async function findBooksById(id) {
 }
 
 async function addBooks(data) {
-  const client = await createConnection();
-
   const addedbook = await client
     .db("Books")
     .collection("booklist")
@@ -32,8 +26,6 @@ async function addBooks(data) {
 }
 
 async function editBook(name, req) {
-  const client = await createConnection();
-
   const editbook = await client
     .db("Books")
     .collection("booklist")
@@ -42,8 +34,6 @@ async function editBook(name, req) {
 }
 
 async function deleteBook(id) {
-  const client = await createConnection();
-
   const book = await client
     .db("Books")
     .collection("booklist")

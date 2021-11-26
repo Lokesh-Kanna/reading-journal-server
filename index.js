@@ -9,7 +9,7 @@ const app = express();
 
 app.use(express.json()); //Middlewere to convert all the request to JSON
 
-const PORT = 9000;
+const PORT = process.env.PORT || 9000;
 
 const MONGO_URL = process.env.MONGO_URL;
 

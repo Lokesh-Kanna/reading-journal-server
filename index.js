@@ -1,6 +1,13 @@
 import express from "express";
 import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
+import {
+  showAllBooks,
+  findBooksById,
+  addBooks,
+  editBook,
+  deleteBook,
+} from "./helper.js";
 
 dotenv.config();
 
@@ -12,7 +19,7 @@ const PORT = 9000;
 
 const MONGO_URL = process.env.MONGO_URL;
 
-async function createConnection() {
+export async function createConnection() {
   const client = new MongoClient(MONGO_URL);
   await client.connect();
   console.log("Mongo DB is connected.");
@@ -30,26 +37,14 @@ app.get("/booklist", async (req, res) => {
   if (filter.pubyear) {
     filter.pubyear = parseInt(filter.pubyear);
   }
-  console.log(filter);
 
-  const client = await createConnection();
-
-  const books = await client
-    .db("Books")
-    .collection("booklist")
-    .find(filter)
-    .toArray();
+  const books = await showAllBooks(filter);
   res.send(books);
 });
 
 app.get("/booklist/:id", async (req, res) => {
   const { id } = req.params;
-  const client = await createConnection();
-
-  const book = await client
-    .db("Books")
-    .collection("booklist")
-    .findOne({ id: id });
+  const book = await findBooksById(id);
 
   book
     ? res.send(book)
@@ -58,24 +53,14 @@ app.get("/booklist/:id", async (req, res) => {
 
 app.post("/booklist", async (req, res) => {
   const data = req.body;
-  const client = await createConnection();
-
-  const addedbook = await client
-    .db("Books")
-    .collection("booklist")
-    .insertMany(data);
+  const addedbook = await addBooks(data);
 
   res.send(addedbook);
 });
 
 app.delete("/booklist/:id", async (req, res) => {
   const { id } = req.params;
-  const client = await createConnection();
-
-  const book = await client
-    .db("Books")
-    .collection("booklist")
-    .deleteOne({ id: id });
+  const book = await deleteBook(id);
 
   book
     ? res.send(book)
@@ -85,12 +70,7 @@ app.delete("/booklist/:id", async (req, res) => {
 app.put("/booklist", async (req, res) => {
   const { name } = req.query;
 
-  const client = await createConnection();
-
-  const editbook = await client
-    .db("Books")
-    .collection("booklist")
-    .updateOne({ name: name }, { $set: req.body });
+  const editbook = await editBook(name, req);
 
   res.send(editbook);
 });

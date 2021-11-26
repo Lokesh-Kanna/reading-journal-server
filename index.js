@@ -51,8 +51,8 @@ app.get("/booklist", async (req, res) => {
 
   let filter = req.query;
 
-  if (filter.rating) {
-    filter.rating = parseInt(filter.rating);
+  if (filter.pubyear) {
+    filter.pubyear = parseInt(filter.pubyear);
   }
   console.log(filter);
 
@@ -107,6 +107,19 @@ app.delete("/booklist/:id", async (req, res) => {
   book
     ? res.send(book)
     : res.send({ message: `There is no book with the id ${id}` });
+});
+
+app.put("/booklist", async (req, res) => {
+  const { name } = req.query;
+
+  const client = await createConnection();
+
+  const editbook = await client
+    .db("Books")
+    .collection("booklist")
+    .updateOne({ name: name }, { $set: req.body });
+
+  res.send(editbook);
 });
 
 app.listen(PORT, () =>

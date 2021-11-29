@@ -2,6 +2,7 @@ import express from "express";
 import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
 import { bookRouter } from "./routes/books.js";
+import cors from "cors";
 
 dotenv.config();
 

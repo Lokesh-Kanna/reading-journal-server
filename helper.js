@@ -1,4 +1,5 @@
 import { client } from "./index.js";
+import bcrypt from "bcrypt";
 
 async function showAllBooks(filter) {
   const books = await client
@@ -41,4 +42,19 @@ async function deleteBook(id) {
   return book;
 }
 
-export { showAllBooks, findBooksById, addBooks, editBook, deleteBook };
+async function genPassword(password) {
+  const salt = await bcrypt.genSalt(10);
+  const hashedPass = await bcrypt.hash(password, salt);
+  return hashedPass;
+}
+
+genPassword("password@123");
+
+export {
+  showAllBooks,
+  findBooksById,
+  addBooks,
+  editBook,
+  deleteBook,
+  genPassword,
+};

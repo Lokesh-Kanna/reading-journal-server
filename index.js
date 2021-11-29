@@ -3,6 +3,7 @@ import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
 import { bookRouter } from "./routes/books.js";
 import cors from "cors";
+import { userRouter } from "./routes/users.js";
 
 dotenv.config();
 
@@ -31,6 +32,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/booklist", bookRouter);
+
+app.use("/users", userRouter);
 
 app.listen(PORT, () =>
   console.log("The server has started in local host ", PORT)
